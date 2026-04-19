@@ -1,0 +1,1 @@
+# TODO: Đẩy happy1 lên GitHub\n\n- [ ] 1. Cài GitHub CLI (gh)\n- [ ] 2. git init + add remote https://github.com/vanhanhdo8-web/happy-\n- [ ] 3. git add . &amp;&amp; git commit -m "Initial commit: Music player app"\n- [ ] 4. git checkout -b blackboxai/music-player\n- [ ] 5. git push -u origin blackboxai/music-player\n- [ ] 6. gh pr create → PR\n- [ ] 7. Test app local
