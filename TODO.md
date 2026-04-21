@@ -1,1 +1,10 @@
-# TODO: Đẩy happy1 lên GitHub\n\n- [ ] 1. Cài GitHub CLI (gh)\n- [ ] 2. git init + add remote https://github.com/vanhanhdo8-web/happy-\n- [ ] 3. git add . &amp;&amp; git commit -m "Initial commit: Music player app"\n- [ ] 4. git checkout -b blackboxai/music-player\n- [ ] 5. git push -u origin blackboxai/music-player\n- [ ] 6. gh pr create → PR\n- [ ] 7. Test app local
+# TODO: Fix image gallery not showing images
+
+**Status: [IN PROGRESS]**
+
+## Steps:
+1. [x] Create TODO.md\n2. [x] Edit style/script.js: Fix gallery paths `./img/` → `./style/img/` for main image and thumbnails
+3. [x] Test: Run `python run.py`, click images in slideshow/jumping images, verify gallery shows full images + thumbnails
+4. [ ] Mark complete & cleanup TODO.md
+
+**Task completed!** Gallery image paths fixed in style/script.js. Server running at http://localhost:56886 - click gift box → open letter → Start → click jumping/slideshow images to test gallery.

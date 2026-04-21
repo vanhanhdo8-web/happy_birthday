@@ -1072,6 +1072,11 @@ body {
     opacity: 1;
     visibility: visible;
 }
+.letter-open .music-toggle {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none;
+}
 .music-toggle:hover {
     background: #ffd966;
     color: #111;

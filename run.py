@@ -3,6 +3,7 @@
 
 import os
 import sys
+import json
 import webbrowser
 import socket
 import threading
@@ -22,6 +23,33 @@ def open_browser(url, delay=1.5):
         webbrowser.open(url)
     threading.Thread(target=_open, daemon=True).start()
 
+class CustomHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        # Endpoint quét ảnh trong thư mục ./img/
+        if self.path == '/scan-images':
+            img_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'style', 'img')
+            exts = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
+            try:
+                files = sorted([
+                    f for f in os.listdir(img_dir)
+                    if f.lower().endswith(exts)
+                ])
+            except FileNotFoundError:
+                files = []
+            
+            body = json.dumps(files).encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Content-Length', len(body))
+            self.end_headers()
+            self.wfile.write(body)
+        else:
+            # Các file tĩnh khác xử lý bình thường
+            super().do_GET()
+
+    def log_message(self, format, *args):
+        pass  # Tắt log request cho gọn
+
 def main():
     # Xác định thư mục gốc (nơi chứa file index.html)
     root_dir = os.path.dirname(os.path.abspath(__file__))
@@ -36,7 +64,7 @@ def main():
     # Chọn cổng
     port = get_free_port()
     server_address = ('', port)
-    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    httpd = HTTPServer(server_address, CustomHandler)
 
     url = f"http://localhost:{port}"
     print(f"🚀 Đang chạy server tại {url}")

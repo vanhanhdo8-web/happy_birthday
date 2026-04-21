@@ -1,7 +1,9 @@
+
+
 let datetxt = "6 - 5";
 let datatxtletter = "Nhân ngày đặc biệt này, chúc bạn luôn có thật nhiều sức khỏe để theo đuổi những ước mơ của mình, thật nhiều niềm vui để mỗi ngày trôi qua đều là một ngày đáng nhớ, và thật nhiều may mắn để mọi dự định đều thuận lợi. Mong rằng tuổi mới sẽ mang đến cho bạn những cơ hội mới, những trải nghiệm đáng giá và những khoảnh khắc hạnh phúc bên gia đình, bạn bè và những người yêu thương.";
 
-let titleLetter = "Happy Birthday!";
+let titleLetter = "Happy Birthday !";
 let charArrDate = datetxt.split('');
 let charArrDateLetter = datatxtletter.split('');
 let charArrTitle = titleLetter.split('');
@@ -11,10 +13,7 @@ let currentIndexTitle = 0;
 let date__of__birth = document.querySelector(".date__of__birth span");
 let text__letter = document.querySelector(".text__letter p");
 
-// bgMusic HTML element đã được thay bằng vinyl player (tránh xung đột 2 audio)
-
 function startEverything() {
-    // Vinyl player sẽ tự phát khi người dùng mở quà (xem bên dưới hàm startVinylOnOpen)
     startVinylOnOpen();
 
     setTimeout(function () {
@@ -35,10 +34,10 @@ function startEverything() {
 
     if (window.innerWidth < 768) {
         setTimeout(() => {
-            fcMobile.timeout("18", document.querySelector(".day"))
+            fcMobile.timeout("6", document.querySelector(".day"))
         }, 5000)
         setTimeout(() => {
-            fcMobile.timeout("6", document.querySelector(".month"))
+            fcMobile.timeout("5", document.querySelector(".month"))
         }, 6000)
     }
 
@@ -66,7 +65,6 @@ function createSakura(container) {
 }
 
 $(document).ready(function () {
-    // Inject keyframe rơi xuống (1 lần duy nhất)
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fallDown {
@@ -79,11 +77,9 @@ $(document).ready(function () {
 
     $("#gift-overlay").on("click", function () {
         $(this).addClass("hidden");
-        setTimeout(() => {
-            $("#wrapper").css({ "opacity": "1", "visibility": "visible" });
-            $("body").addClass("started");
-            startEverything();
-        }, 300);
+        $("#wrapper").css({ "opacity": "1", "visibility": "visible" });
+        $("body").addClass("started");
+        startEverything();
     });
 });
 
@@ -164,6 +160,8 @@ function startFireworks() {
 
 $("#btn__letter").on("click", function () {
     $(".box__letter").fadeIn(300)
+    $("body").addClass("letter-open");
+    $("#vinyl-player").addClass("hidden");
     startFireworks();
     setTimeout(function () { $(".letter__border").slideDown(500); }, 300)
     setTimeout(function () {
@@ -196,7 +194,7 @@ $(".close").on("click", function () {
     clearInterval(intervalTitle);
     clearInterval(fireworkTimer);
     clearInterval(jumpInterval);
-    clearInterval(heartGiftInterval);   // Dừng tim/quà bay
+    clearInterval(heartGiftInterval);
     canvas.style.display = 'none';
     particles = []; rockets = [];
     document.querySelector(".title__letter").textContent = "";
@@ -209,53 +207,43 @@ $(".close").on("click", function () {
     $(".letter__border").slideUp();
 })
 
-// Biến toàn cục cho ảnh bay
 let jumpInterval;
-let heartGiftInterval;   // interval cho tim và quà
+let heartGiftInterval;
 
-// Hàm tạo trái tim và quà bay lên (cùng kiểu ảnh)
 function createHeartGiftRain() {
     const container = document.getElementById('image-jump-container');
     const items = ['❤️', '🎁', '💝', '💖', '🎀', '✨'];
     const isMobile = window.innerWidth < 768;
-
-    // Mobile: 1 icon/lần, 800ms/tick — Desktop: 1-3 icon/lần, 400ms/tick
     const maxPerTick = isMobile ? 1 : Math.floor(Math.random() * 3) + 1;
     const tickInterval = isMobile ? 800 : 400;
-    const MAX_ICONS = 12; // tối đa 12 icon cùng lúc (cả desktop lẫn mobile)
+    const MAX_ICONS = 12;
 
     heartGiftInterval = setInterval(() => {
-        // Bỏ qua nếu đã đủ 12 icon trên màn hình
         const currentIcons = container.querySelectorAll('div.falling-icon').length;
         if (currentIcons >= MAX_ICONS) return;
-
         const count = isMobile ? 1 : Math.floor(Math.random() * 3) + 1;
         for (let i = 0; i < count; i++) {
             if (container.querySelectorAll('div.falling-icon').length >= MAX_ICONS) break;
-
             const div = document.createElement('div');
-            div.className = 'falling-icon'; // thêm class để đếm chính xác
+            div.className = 'falling-icon';
             const emoji = items[Math.floor(Math.random() * items.length)];
             div.textContent = emoji;
             div.style.position = 'absolute';
             div.style.bottom = '-50px';
             div.style.fontSize = (30 + Math.random() * 40) + 'px';
-            div.style.filter = 'drop-shadow(0 0 8px rgba(255,215,0,0.8))'; // giữ nguyên drop-shadow
+            div.style.filter = 'drop-shadow(0 0 8px rgba(255,215,0,0.8))';
             div.style.pointerEvents = 'none';
             div.style.zIndex = '302';
-
             const startX = Math.random() * 80 + 10;
             const endX = startX + (Math.random() * 40 - 20);
             const duration = Math.random() * 3 + 5;
             const midRot = Math.random() * 720 - 360;
             const endRot = midRot + (Math.random() * 720 - 360);
-
             div.style.setProperty('--start-x', startX + '%');
             div.style.setProperty('--end-x', endX + '%');
             div.style.setProperty('--mid-rot', midRot + 'deg');
             div.style.setProperty('--end-rot', endRot + 'deg');
             div.style.animation = `jumpAnimation ${duration}s forwards linear`;
-
             container.appendChild(div);
             setTimeout(() => { div.remove(); }, duration * 1000);
         }
@@ -263,55 +251,46 @@ function createHeartGiftRain() {
 }
 
 $("#btn__start").on("click", function () {
-    // Đóng lá thư
     clearInterval(intervalContent);
     clearInterval(intervalTitle);
     $(".box__letter").fadeOut(300);
     $(".letter__border").slideUp(300);
-    
-    // Ẩn nút Start
     $(this).fadeOut();
-    
-    // Khởi động tim và quà bay
     createHeartGiftRain();
 
-    // Khởi động ảnh bay
     const container = $("#image-jump-container");
-    const maxImages = 32;
-
-    jumpInterval = setInterval(() => {
-            const randomImgIndex = Math.floor(Math.random() * maxImages) + 1;
-            const img = document.createElement('img');
-            img.src = `./img/Anh (${randomImgIndex}).jpg`;
-            img.className = 'jumping-image';
-            img.dataset.index = randomImgIndex;
-            img.style.pointerEvents = 'auto';
-            img.style.cursor = 'pointer';
-
-            img.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const index = parseInt(this.dataset.index);
-                if (typeof window.openGallery === 'function') window.openGallery(index);
-            });
-
-            const startX = Math.random() * 80 + 10;
-            const endX = startX + (Math.random() * 40 - 20);
-            const duration = Math.random() * 3 + 6;
-            const midRot = Math.random() * 720 - 360;
-            const endRot = midRot + (Math.random() * 720 - 360);
-
-            img.style.setProperty('--start-x', startX + '%');
-            img.style.setProperty('--end-x', endX + '%');
-            img.style.setProperty('--mid-rot', midRot + 'deg');
-            img.style.setProperty('--end-rot', endRot + 'deg');
-            img.style.animation = `jumpAnimation ${duration}s forwards linear`;
-
-            container.append(img);
-            setTimeout(() => { img.remove(); }, duration * 1000);
-        }, 600);
+    fetch('/scan-images')
+        .then(res => res.json())
+        .then(imageFiles => {
+            jumpInterval = setInterval(() => {
+                const fileName = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+                const img = document.createElement('img');
+                img.src = `./style/img/${fileName}`;
+                img.className = 'jumping-image';
+                img.dataset.name = fileName;
+                img.style.pointerEvents = 'auto';
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof window.openGallery === 'function') window.openGallery(fileName);
+                });
+                const startX = Math.random() * 80 + 10;
+                const endX = startX + (Math.random() * 40 - 20);
+                const duration = Math.random() * 3 + 6;
+                const midRot = Math.random() * 720 - 360;
+                const endRot = midRot + (Math.random() * 720 - 360);
+                img.style.setProperty('--start-x', startX + '%');
+                img.style.setProperty('--end-x', endX + '%');
+                img.style.setProperty('--mid-rot', midRot + 'deg');
+                img.style.setProperty('--end-rot', endRot + 'deg');
+                img.style.animation = `jumpAnimation ${duration}s forwards linear`;
+                container.append(img);
+                setTimeout(() => { img.remove(); }, duration * 1000);
+            }, 600);
+        })
+        .catch(() => console.warn('Không tìm thấy ./img/images.json, hãy chạy generate-images.js'));
 });
 
-// Mobile helpers
 function mobile() {
     const app = {
         timeout: function (txt, dom) {
@@ -327,13 +306,12 @@ function mobile() {
 }
 const fcMobile = mobile();
 
-// Slideshow
 const imageContainer = document.querySelector('.image');
 function initSlideshow() {
     imageContainer.innerHTML = '';
     for (let i = 1; i <= 32; i++) {
         const img = document.createElement('img');
-        img.src = `./img/Anh (${i}).jpg`;
+        img.src = `./style/img/Anh (${i}).jpg`;
         img.alt = `Birthday Image ${i}`;
         if (i === 1) img.classList.add('active');
         imageContainer.appendChild(img);
@@ -350,7 +328,7 @@ function initSlideshow() {
 }
 document.addEventListener('DOMContentLoaded', initSlideshow);
 
-// ========== GALLERY SYSTEM ==========
+// ========== GALLERY SYSTEM (đã sửa đường dẫn ảnh) ==========
 let currentGalleryIndex = 1;
 const totalImages = 32;
 const emotionFallContainer = document.getElementById('emotion-fall-container') || (() => {
@@ -376,7 +354,7 @@ function createGalleryViewer() {
     const strip = document.getElementById('thumbnail-strip');
     for (let i = 1; i <= totalImages; i++) {
         const thumb = document.createElement('img');
-        thumb.src = `./img/Anh (${i}).jpg`;
+        thumb.src = `./style/img/Anh (${i}).jpg`;
         thumb.className = 'thumbnail' + (i === 1 ? ' active' : ''); thumb.dataset.index = i;
         thumb.addEventListener('click', () => { currentGalleryIndex = i; updateGalleryImage(); });
         strip.appendChild(thumb);
@@ -416,9 +394,10 @@ function rainEmotions(emoji, count = 50) {
     for (let i = 0; i < count; i++) { setTimeout(() => { createFallingEmotion(emoji, Math.random() * window.innerWidth, -50 - Math.random() * 300); }, i * 50); }
 }
 
+// ***** SỬA LỖI GALLERY: ĐƯỜNG DẪN ẢNH ĐÚNG *****
 function updateGalleryImage() {
     const galleryImage = document.getElementById('gallery-image');
-    if (galleryImage) galleryImage.src = `./img/Anh (${currentGalleryIndex}).jpg`;
+    if (galleryImage) galleryImage.src = `./style/img/Anh (${currentGalleryIndex}).jpg`;
     document.querySelectorAll('.thumbnail').forEach((thumb, idx) => { thumb.classList.toggle('active', idx + 1 === currentGalleryIndex); });
 }
 
@@ -449,7 +428,6 @@ function makeImageClickable() {
         openGallery(index);
     });
 }
-
 document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { makeImageClickable(); }, 500); });
 document.addEventListener('click', function(e) { if (e.target.classList.contains('emotion-icon') && e.detail === 2) rainEmotions(e.target.dataset.emoji, 40); });
 let touchStartTime;
@@ -459,12 +437,9 @@ document.addEventListener('touchend', function(e) { if (e.target.classList.conta
 window.openGallery = openGallery;
 window.rainEmotions = rainEmotions;
 
-
-// ========== VINYL MUSIC PLAYER (Tích hợp phân tích) ==========
+// ========== VINYL MUSIC PLAYER ==========
 const playlist = [
-    // Bài 1: nhac.mp3 trong ./style/ — phát đầu tiên khi mở quà
     { title: "Nhạc Nền", artist: "", src: "./style/nhac.mp3", cover: "./music/covers/covernen.jpg" },
-    // Các bài tiếp theo trong ./music/
     { title: "Happy birthday", artist: "Elaina Music", src: "./music/song1.mp3", cover: "./music/covers/cover1.jpg" },
     { title: "Sinh nhật vui", artist: "严浩翔 🐻🌷", src: "./music/song2.mp3", cover: "./music/covers/cover2.jpg" },
     { title: "Happy birthday to you 🌷", artist: "nhạc", src: "./music/song3.mp3", cover: "./music/covers/cover3.jpg" },
@@ -474,7 +449,6 @@ let currentTrack = 0;
 let isPlaying = false;
 const audio = new Audio();
 
-// DOM elements
 const vinylDisc = document.getElementById('vinyl-disc');
 const vinylPlayer = document.querySelector('.vinyl-player');
 const playPauseBtn = document.getElementById('play-pause-btn');
@@ -489,14 +463,12 @@ const durationTimeEl = document.getElementById('duration-time');
 const playlistEl = document.getElementById('mini-playlist');
 const musicToggle = document.getElementById('music-toggle');
 
-// Format time
 function formatTime(sec) {
     const m = Math.floor(sec / 60);
     const s = Math.floor(sec % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
-// Load track
 function loadTrack(index) {
     const track = playlist[index];
     audio.src = track.src;
@@ -506,7 +478,6 @@ function loadTrack(index) {
     updatePlaylistUI();
 }
 
-// Play/Pause toggle
 function togglePlayPause() {
     if (isPlaying) {
         audio.pause();
@@ -522,7 +493,6 @@ function togglePlayPause() {
     isPlaying = !isPlaying;
 }
 
-// Next/Prev
 function nextTrack() {
     currentTrack = (currentTrack + 1) % playlist.length;
     loadTrack(currentTrack);
@@ -534,7 +504,6 @@ function prevTrack() {
     if (isPlaying) audio.play();
 }
 
-// Update progress bar & time
 audio.addEventListener('timeupdate', () => {
     if (audio.duration) {
         const percent = (audio.currentTime / audio.duration) * 100;
@@ -546,10 +515,8 @@ audio.addEventListener('timeupdate', () => {
 progressBar.addEventListener('input', () => {
     audio.currentTime = (progressBar.value / 100) * audio.duration;
 });
-
 audio.addEventListener('ended', nextTrack);
 
-// Render playlist
 function updatePlaylistUI() {
     playlistEl.innerHTML = playlist.map((track, idx) => `
         <div class="playlist-item ${idx === currentTrack ? 'active' : ''}" data-index="${idx}">
@@ -569,12 +536,19 @@ function updatePlaylistUI() {
     });
 }
 
-// Toggle player visibility
 musicToggle.addEventListener('click', () => {
     vinylPlayer.classList.toggle('hidden');
 });
 
-// Init player
+// Click ngoài vinyl player để đóng
+document.addEventListener('click', (e) => {
+    if (!vinylPlayer.classList.contains('hidden') &&
+        !vinylPlayer.contains(e.target) &&
+        !musicToggle.contains(e.target)) {
+        vinylPlayer.classList.add('hidden');
+    }
+});
+
 function initVinylPlayer() {
     loadTrack(0);
     playPauseBtn.addEventListener('click', togglePlayPause);
@@ -583,7 +557,6 @@ function initVinylPlayer() {
     updatePlaylistUI();
 }
 
-// Phát nhạc bài đầu tiên khi người dùng mở quà (gọi từ startEverything)
 function startVinylOnOpen() {
     loadTrack(0);
     audio.play().then(() => {
@@ -602,3 +575,66 @@ if (document.readyState === 'loading') {
 } else {
     initVinylPlayer();
 }
+
+// ========== KÉO THẢ VINYL PLAYER (không lưu vị trí) ==========
+(function makeVinylDraggable() {
+    const player = document.querySelector('.vinyl-player');
+    if (!player) return;
+    const header = player.querySelector('.vinyl-player-header');
+    if (!header) return;
+
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+
+    const computedStyle = window.getComputedStyle(player);
+    if (computedStyle.position !== 'absolute' && computedStyle.position !== 'fixed') {
+        player.style.position = 'fixed';
+    }
+    // Đặt vị trí mặc định nếu chưa có
+    if (!player.style.left || player.style.left === 'auto') {
+        player.style.right = '20px';
+        player.style.bottom = '20px';
+        player.style.top = 'auto';
+        player.style.left = 'auto';
+    }
+
+    header.style.cursor = 'move';
+    header.style.userSelect = 'none';
+
+    header.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = player.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+        player.style.left = initialLeft + 'px';
+        player.style.top = initialTop + 'px';
+        player.style.right = 'auto';
+        player.style.bottom = 'auto';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        let dx = e.clientX - startX;
+        let dy = e.clientY - startY;
+        let newLeft = initialLeft + dx;
+        let newTop = initialTop + dy;
+        const playerWidth = player.offsetWidth;
+        const playerHeight = player.offsetHeight;
+        const maxLeft = window.innerWidth - playerWidth;
+        const maxTop = window.innerHeight - playerHeight;
+        newLeft = Math.min(Math.max(0, newLeft), maxLeft);
+        newTop = Math.min(Math.max(0, newTop), maxTop);
+        player.style.left = newLeft + 'px';
+        player.style.top = newTop + 'px';
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        // KHÔNG lưu vị trí
+    });
+})();
