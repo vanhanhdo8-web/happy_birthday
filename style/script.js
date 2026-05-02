@@ -268,6 +268,7 @@ $("#btn__start").on("click", function () {
             img.dataset.name = fileName;
             img.style.pointerEvents = 'auto';
             img.style.cursor = 'pointer';
+            attachImageFallback(img, stripExtension(fileName));
             img.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (typeof window.openGallery === 'function') window.openGallery(fileName);
@@ -318,11 +319,39 @@ const fcMobile = mobile();
 // ========== DANH SÁCH ẢNH ĐỘNG ==========
 let scannedImages = [];
 
+// Các đuôi ảnh được hỗ trợ (thứ tự ưu tiên khi fallback)
+const SUPPORTED_EXTENSIONS = ['jpg', 'JPG', 'PNG', 'png', 'jpeg', 'JPEG', 'gif', 'GIF', 'webp', 'WEBP'];
+
+/**
+ * Trả về tên file không có đuôi
+ */
+function stripExtension(fileName) {
+    return fileName.replace(/\.[^/.]+$/, '');
+}
+
+/**
+ * Gắn onerror fallback để thử các đuôi ảnh khác nếu load thất bại
+ */
+function attachImageFallback(imgEl, baseName) {
+    let tryIndex = 0;
+    imgEl.onerror = function () {
+        tryIndex++;
+        if (tryIndex < SUPPORTED_EXTENSIONS.length) {
+            imgEl.src = `./style/img/${baseName}.${SUPPORTED_EXTENSIONS[tryIndex]}`;
+        } else {
+            imgEl.onerror = null; // Dừng thử nếu hết đuôi
+        }
+    };
+}
+
 function fetchAndInitImages() {
     return fetch('/scan-images')
         .then(res => res.json())
         .then(files => {
-            scannedImages = files;
+            // Lọc chỉ giữ file có đuôi ảnh hợp lệ (không phân biệt hoa thường)
+            scannedImages = files.filter(f =>
+                /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
+            );
             initSlideshow();
         })
         .catch(() => {
@@ -341,6 +370,7 @@ function initSlideshow() {
         img.src = `./style/img/${fileName}`;
         img.alt = `Birthday Image ${i + 1}`;
         if (i === 0) img.classList.add('active');
+        attachImageFallback(img, stripExtension(fileName));
         imageContainer.appendChild(img);
     });
     let currentImgIndex = 0;
@@ -383,6 +413,7 @@ function createGalleryViewer() {
         thumb.src = `./style/img/${fileName}`;
         thumb.className = 'thumbnail' + (i === 0 ? ' active' : '');
         thumb.dataset.index = i;
+        attachImageFallback(thumb, stripExtension(fileName));
         thumb.addEventListener('click', () => { currentGalleryIndex = i; updateGalleryImage(); });
         strip.appendChild(thumb);
     });
@@ -430,7 +461,9 @@ function rainEmotions(emoji, count = 50) {
 function updateGalleryImage() {
     const galleryImage = document.getElementById('gallery-image');
     if (galleryImage && scannedImages[currentGalleryIndex]) {
-        galleryImage.src = `./style/img/${scannedImages[currentGalleryIndex]}`;
+        const fileName = scannedImages[currentGalleryIndex];
+        galleryImage.src = `./style/img/${fileName}`;
+        attachImageFallback(galleryImage, stripExtension(fileName));
     }
     document.querySelectorAll('.thumbnail').forEach((thumb, idx) => {
         thumb.classList.toggle('active', idx === currentGalleryIndex);
