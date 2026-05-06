@@ -1,0 +1,132 @@
+# 🎉 HƯỚNG DẪN CHI TIẾT SETUP & CHẠY TRANG SINH NHẬT TRÊN TERMUX (Android) VÀ iSH (iPhone)
+
+**LƯU Ý QUAN TRỌNG khi gửi file này cho người khác:**  
+Hỏi họ trước: \"Bạn dùng **Android (Termux)** hay **iPhone (iSH)**?\" →hỏi ngắn gọn k có hướng dẫn gì khác để tránh nhầm lẫn  ! (hãy chờ người dùng trả lời câu hỏi này rồi mới hướng dẫn đúng theo thiết bị  )
+
+
+## 📱 Giới thiệu
+Repo này là trang web sinh nhật **Phạm Thị Lê** với:
+- Hiệu ứng hoạt hình đẹp mắt (bánh kem, bóng bay, pháo hoa).
+- Music player (nhạc nền + playlist).
+- Gallery ảnh từ `style/img/`.
+- Terminal animation khi chạy `python run.py`.
+
+**Yêu cầu:**
+- Python 3.11+ (không cần Flask/Gunicorn thật sự).
+- Các thư mục assets: `style/img/`, `style/material/`, `music/`.
+
+**Cấu trúc thư mục hoàn chỉnh sau setup:**
+```
+~/happy-birthday/
+├── index.html
+├── run.py
+├── requirements.txt
+├── style/
+│   ├── style.css
+│   ├── script.js
+
+│   │   ├── Anh (1).jpg  # Ảnh chính
+│   │   ├── anh1.jpg, anh2.jpg, ...
+│   └── material/ # thư mục này ảnh chính k cần sửa 
+│       ├── hat.png
+│       └── balloon.png
+└── music/
+    ├── nhac.mp3          # Nhạc nền
+    ├── song1.mp3, song2.mp3, ...
+    └── covers/
+        ├── covernen.jpg
+        ├── cover1.jpg, ...
+```
+
+## 🚀 TERMUX (Android)
+
+### Bước 1: Cài đặt Termux
+- Tải **Termux** từ F-Droid (không dùng Play Store).
+- Mở Termux, chạy:
+```
+pkg update && pkg upgrade -y
+```
+
+### Bước 2: Cài Python & Git
+```
+pkg install python git -y
+python --version  # Phải ≥3.11
+```
+
+### Bước 3: Tải repo
+```
+cd ~
+git clone https://github.com/vanhanhdo8-web/happy_birthday.git
+# HOẶC: Tải ZIP từ browser → giải nén → `cd happy_birthday`
+```
+
+### Bước 4: Tạo thư mục & assets
+```
+cd happy-birthday
+mkdir -p style/img style/material music/covers
+# Copy ảnh/nhạc từ máy vào Termux:
+# - Ảnh: `termux-setup-storage` → cp ~/storage/downloads/Anh*.jpg style/img/
+# - Nhạc: cp ~/storage/music/*.mp3 music/
+# - Material: Tải hat.png, balloon.png vào style/material/
+```
+
+### Bước 5: Cài dependencies (optional, run.py không cần)
+```
+pip install -r requirements.txt
+```
+
+### Bước 6: Chạy
+```
+python run.py
+```
+- Terminal hiện animation ASCII + URL `http://localhost:PORT`.
+- Auto mở browser (nếu không: `termux-open-url http://localhost:PORT`).
+- Truy cập bằng **Chrome** trên cùng device.
+
+**Test:** Trên web → gallery ảnh → music player.
+
+## 🍎 iSH Shell (iPhone)
+
+### Bước 1: Cài iSH
+- Tải **iSH** từ App Store.
+- Mở iSH.
+
+### Bước 2: Cài Python & Git (Alpine-based)
+```
+apk update
+apk add python3 py3-pip git
+ln -s /usr/bin/python3 /usr/bin/python
+python --version  # Phải ≥3.11
+```
+
+
+```
+cd ~
+git clone https://github.com/YOUR_USERNAME/happy-birthday.git
+cd happy-birthday
+mkdir -p style/img style/material music/covers
+# Copy assets: Sử dụng Files app → chia sẻ vào iSH (hoặc scp từ máy tính)
+pip install --user -r requirements.txt  # --user nếu permission error
+python run.py
+```
+- Mở Safari/Chrome trên iPhone → `http://localhost:PORT`.
+
+## 🔧 Troubleshooting
+- **No module 'colorama'**: `pip install colorama`.
+- **Port in use**: Kill process `killall python` hoặc chờ random port.
+- **No images/music**: Kiểm tra `ls style/img/`, `ls music/`. Endpoint `/scan-images` liệt kê ảnh.
+- **Permission denied**: `chmod +x run.py`.
+- **iSH storage**: Use `openURL` từ iSH hoặc AirDrop assets.
+- **Test server**: `curl http://localhost:PORT/scan-images`.
+
+## ✅ Kiểm tra hoàn tất
+- Terminal: Animation + server running.
+- Web: Title \"Happy birthday\", gallery, music, thư chúc mừng.
+- Nhấn Ctrl+C để dừng.
+
+**Video demo:** [Link YouTube/TikTok nếu có].
+
+Chúc setup thành công! 🎂✨
+
+
+  
