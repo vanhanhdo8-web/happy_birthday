@@ -85,31 +85,57 @@ python run.py
 
 **Test:** Trên web → gallery ảnh → music player.
 
-## 🍎 iSH Shell (iPhone)
+Dưới đây là phiên bản đã sửa để dùng `lg2` thay vì `git`:
 
-### Bước 1: Cài iSH
-- Tải **iSH** từ App Store.
-- Mở iSH.
+## 📱 a-shell (iPhone)
 
-### Bước 2: Cài Python & Git (Alpine-based)
+### Bước 1: Cài a-shell
+- Tải **a-shell** từ App Store.
+- Mở a-shell.
+
+### Bước 2: Cập nhật pip (a-shell đã có sẵn Python)
+
+```bash
+# a-shell đã có Python và lg2, chỉ cần update pip
+pip install --upgrade pip
+python --version  # Kiểm tra version
 ```
-apk update
-apk add python3 py3-pip git
-ln -s /usr/bin/python3 /usr/bin/python
-python --version  # Phải ≥3.11
-```
 
+### Bước 3: Clone & tạo cấu trúc thư mục (dùng lg2)
 
-```
+```bash
 cd ~
-git clone https://github.com/YOUR_USERNAME/happy-birthday.git
+lg2 clone https://github.com/YOUR_USERNAME/happy-birthday.git
 cd happy-birthday
-mkdir -p style/img style/material music/covers
-# Copy assets: Sử dụng Files app → chia sẻ vào iSH (hoặc scp từ máy tính)
-pip install --user -r requirements.txt  # --user nếu permission error
+
+```
+
+
+### Bước 4: Thêm ảnh vào thư mục img ở /style/img/
+- Truy cập vào img xóa các ảnh trong thư mục đi thay bằng ảnh trong máy 
+LƯU Ý:  hãy nhắc người dùng truy cập vào /style/img/ để thêm ảnh ảnh tên j cũng đc nhưng phải đúng đuôi .jpg , .JPG ,.png,.PNG
+
+### Bước 5: Cài dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Bước 6: Chạy ứng dụng
+
+```bash
 python run.py
 ```
-- Mở Safari/Chrome trên iPhone → `http://localhost:PORT`.
+
+### Bước 7: Mở trên iPhone
+
+- Mở Safari/Chrome → Truy cập:
+  ```
+  http://localhost:8000
+  ```
+  nhắc người dùng truy cập vào link này
+  (PORT hiển thị khi chạy `run.py`)
+
 
 ## 🔧 Troubleshooting
 - **No module 'colorama'**: `pip install colorama`.
@@ -128,5 +154,3 @@ python run.py
 
 Chúc setup thành công! 🎂✨
 
-
-  
