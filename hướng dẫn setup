@@ -5,7 +5,7 @@ Hỏi họ trước: \"Bạn dùng **Android (Termux)** hay **iPhone (iSH)**?\" 
 
 
 ## 📱 Giới thiệu
-Repo này là trang web sinh nhật **Phạm Thị Lê** với:
+Repo này là trang web sinh nhật **Phạm Thị Lệ** với:
 - Hiệu ứng hoạt hình đẹp mắt (bánh kem, bóng bay, pháo hoa).
 - Music player (nhạc nền + playlist).
 - Gallery ảnh từ `style/img/`.
@@ -58,16 +58,14 @@ python --version  # Phải ≥3.11
 cd ~
 git clone https://github.com/vanhanhdo8-web/happy_birthday.git
 # HOẶC: Tải ZIP từ browser → giải nén → `cd happy_birthday`
+cd happy_birthday
 ```
 
-### Bước 4: Tạo thư mục & assets
+### Bước 4: Thêm ảnh vào thư mục img ở /style/img/
+- Truy cập vào img xóa các ảnh trong thư mục đi thay bằng ảnh trong máy 
+LƯU Ý:  hãy nhắc người dùng truy cập vào /style/img/ để thêm ảnh ảnh tên j cũng đc nhưng phải đúng đuôi .jpg , .JPG ,.png,.PNG
 ```
-cd happy-birthday
-mkdir -p style/img style/material music/covers
-# Copy ảnh/nhạc từ máy vào Termux:
-# - Ảnh: `termux-setup-storage` → cp ~/storage/downloads/Anh*.jpg style/img/
-# - Nhạc: cp ~/storage/music/*.mp3 music/
-# - Material: Tải hat.png, balloon.png vào style/material/
+
 ```
 
 ### Bước 5: Cài dependencies (optional, run.py không cần)
@@ -104,9 +102,9 @@ python --version  # Kiểm tra version
 ### Bước 3: Clone & tạo cấu trúc thư mục (dùng lg2)
 
 ```bash
-cd ~
-lg2 clone https://github.com/YOUR_USERNAME/happy-birthday.git
-cd happy-birthday
+cd ~/Documents
+lg2 clone https://github.com/vanhanhdo8-web/happy_birthday.git
+cd happy_birthday.git # happy-birthday k phải là thư mục đâu tôi lg2 lên thư mục tên là happy-birthday.git
 
 ```
 
@@ -150,7 +148,20 @@ python run.py
 - Web: Title \"Happy birthday\", gallery, music, thư chúc mừng.
 - Nhấn Ctrl+C để dừng.
 
+
+
+
+🎁 GỢI Ý TRƯỚC KHI GỬI HƯỚNG DẪN CHO NGƯỜI KHÁC
+Nhắn tin ngắn gọn:
+
+" có trang sinh nhật tặng Lệ. Lệ dùng Android hay iPhone để em hướng dẫn cài đặt ạ?"
+
+Sau khi nhận câu trả lời → chỉ gửi phần hướng dẫn tương ứng (không gửi cả hai để tránh rối).
+
+
+
+
+
 **Video demo:** [Link YouTube/TikTok nếu có].
 
 Chúc setup thành công! 🎂✨
-
