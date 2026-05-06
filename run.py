@@ -7,7 +7,6 @@ from flask import Flask, send_from_directory, jsonify
 
 app = Flask(__name__)
 
-# ✅ Đường dẫn gốc cố định
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 SUPPORTED_EXTENSIONS = ('.jpg', '.JPG', '.PNG', '.png',
@@ -44,6 +43,7 @@ def scan_images():
 
     return jsonify(files)
 
+# Chạy server (chỉ dùng khi chạy bằng python, không dùng cho gunicorn)
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    print("🌐 Server đang chạy tại: http://localhost:8000/")
+    app.run(host='127.0.0.1', port=8000, debug=False)  # ← đổi từ 0.0.0.0
