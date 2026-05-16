@@ -1276,6 +1276,57 @@ body {
     border-radius: 10px;
 }
 
+/* ===== WRAPPER HIDDEN (ẩn trước khi mở quà) ===== */
+#wrapper.wrapper-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+#wrapper {
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+
+.bunting-decor {
+    position: fixed;
+    top: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-120%);
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s,
+                opacity 0.6s ease 0.3s;
+}
+.bunting-decor img {
+    width: 320px;
+}
+#bunting-left {
+    left: -10px;
+}
+#bunting-right {
+    right: -10px;
+}
+#bunting-right img {
+    transform: scaleX(-1);
+}
+.bunting-decor.show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: buntingSwing 3s ease-in-out 1.5s infinite alternate;
+}
+#bunting-right.show {
+    animation: buntingSwingRight 3.2s ease-in-out 1.6s infinite alternate;
+}
+@keyframes buntingSwing {
+    0%   { transform: translateY(0) rotate(0deg); }
+    50%  { transform: translateY(-6px) rotate(0.8deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+@keyframes buntingSwingRight {
+    0%   { transform: translateY(0) rotate(0deg); }
+    50%  { transform: translateY(-5px) rotate(-0.8deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .vinyl-player {
@@ -1287,56 +1338,4 @@ body {
         height: 110px;
     }
     .track-title { font-size: 12px; }
-}
-/* ===== BUNTING DECORATION ===== */
-.bunting-decor {
-    position: fixed;
-    top: 0;
-    z-index: 5;
-    pointer-events: none;
-    opacity: 0;
-    transform: translateY(-120%);
-    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s,
-                opacity 0.6s ease 0.3s;
-}
-
-.bunting-decor img {
-    width: 340px;
-}
-
-#bunting-left {
-    left: -10px;
-}
-
-#bunting-right {
-    right: -10px;
-}
-
-/* Lật ngược ảnh bên phải */
-#bunting-right img {
-    transform: scaleX(-1);
-}
-
-/* Trạng thái hiện ra + lắc lư nhẹ sau khi rơi xuống */
-.bunting-decor.show {
-    opacity: 1;
-    transform: translateY(0);
-    animation: buntingSwing 3s ease-in-out 1.5s infinite alternate;
-}
-
-@keyframes buntingSwing {
-    0%   { transform: translateY(0) rotate(0deg); }
-    50%  { transform: translateY(-6px) rotate(0.8deg); }
-    100% { transform: translateY(0) rotate(0deg); }
-}
-
-/* Bên phải lắc ngược chiều để tự nhiên hơn */
-#bunting-right.show {
-    animation: buntingSwingRight 3.2s ease-in-out 1.6s infinite alternate;
-}
-
-@keyframes buntingSwingRight {
-    0%   { transform: translateY(0) rotate(0deg); }
-    50%  { transform: translateY(-5px) rotate(-0.8deg); }
-    100% { transform: translateY(0) rotate(0deg); }
 }
