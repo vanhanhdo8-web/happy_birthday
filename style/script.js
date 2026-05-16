@@ -63,6 +63,12 @@ function createSakura(container) {
 }
 
 $(document).ready(function () {
+    // Tạo bunting decoration từ 1.png
+    $('body').append(
+        '<div class="bunting-decor" id="bunting-left"><img src="./style/material/1.png" alt=""></div>' +
+        '<div class="bunting-decor" id="bunting-right"><img src="./style/material/1.png" alt=""></div>'
+    );
+
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fallDown {
@@ -75,15 +81,12 @@ $(document).ready(function () {
 
     $("#gift-overlay").on("click", function () {
         $(this).addClass("hidden");
-        // Hiện nội dung chính
-        $("#wrapper").removeClass("wrapper-hidden");
+        $("#wrapper").css({ "opacity": "1", "visibility": "visible" });
         $("body").addClass("started");
-
-        // Kích hoạt bunting rơi từ trên xuống (delay nhỏ để transition mượt hơn)
+        // Hiện bunting decoration
         setTimeout(function () {
             $(".bunting-decor").addClass("show");
         }, 200);
-
         startEverything();
     });
 });
@@ -270,7 +273,7 @@ $("#btn__start").on("click", function () {
             if (!imageFiles || imageFiles.length === 0) return;
             const fileName = imageFiles[Math.floor(Math.random() * imageFiles.length)];
             const img = document.createElement('img');
-            img.src = `./style/material/${fileName}`;
+            img.src = `./style/img/${fileName}`;
             img.className = 'jumping-image';
             img.dataset.name = fileName;
             img.style.pointerEvents = 'auto';
@@ -344,7 +347,7 @@ function attachImageFallback(imgEl, baseName) {
     imgEl.onerror = function () {
         tryIndex++;
         if (tryIndex < SUPPORTED_EXTENSIONS.length) {
-            imgEl.src = `./style/material/${baseName}.${SUPPORTED_EXTENSIONS[tryIndex]}`;
+            imgEl.src = `./style/img/${baseName}.${SUPPORTED_EXTENSIONS[tryIndex]}`;
         } else {
             imgEl.onerror = null; // Dừng thử nếu hết đuôi
         }
@@ -355,25 +358,17 @@ function fetchAndInitImages() {
     return fetch('/scan-images')
         .then(res => res.json())
         .then(files => {
-            // Lọc chỉ giữ file có đuôi ảnh hợp lệ
-            scannedImages = (files || []).filter(f =>
+            // Lọc chỉ giữ file có đuôi ảnh hợp lệ (không phân biệt hoa thường)
+            scannedImages = files.filter(f =>
                 /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
             );
-
-            // Nếu scan ra rỗng thì không hiện slideshow, giữ nguyên ảnh đại diện gốc
-            if (!scannedImages || scannedImages.length === 0) {
-                scannedImages = [];
-            }
-
             initSlideshow();
         })
         .catch(() => {
             console.warn('Không thể fetch /scan-images');
-            scannedImages = [];
             initSlideshow();
         });
 }
-
 
 const imageContainer = document.querySelector('.image');
 function initSlideshow() {
@@ -382,7 +377,7 @@ function initSlideshow() {
     if (list.length === 0) return;
     list.forEach((fileName, i) => {
         const img = document.createElement('img');
-        img.src = `./style/material/${fileName}`;
+        img.src = `./style/img/${fileName}`;
         img.alt = `Birthday Image ${i + 1}`;
         if (i === 0) img.classList.add('active');
         attachImageFallback(img, stripExtension(fileName));
@@ -425,7 +420,7 @@ function createGalleryViewer() {
     const strip = document.getElementById('thumbnail-strip');
     scannedImages.forEach((fileName, i) => {
         const thumb = document.createElement('img');
-        thumb.src = `./style/material/${fileName}`;
+        thumb.src = `./style/img/${fileName}`;
         thumb.className = 'thumbnail' + (i === 0 ? ' active' : '');
         thumb.dataset.index = i;
         attachImageFallback(thumb, stripExtension(fileName));
@@ -444,7 +439,7 @@ function createGalleryViewer() {
     document.querySelectorAll('.emotion-icon').forEach(icon => {
         icon.addEventListener('click', function(e) {
             const emoji = this.dataset.emoji;
-            createFallingEmotion(emoji, e.clientX, e.clientY);
+            createFallingEmotion(emoji, e.clientX, -50);
             const clickCount = parseInt(this.dataset.clickCount || '0') + 1; this.dataset.clickCount = clickCount;
             if (clickCount >= 3) {
                 for (let i = 0; i < 20; i++) { setTimeout(() => { createFallingEmotion(emoji, Math.random() * window.innerWidth, -50 - Math.random() * 200); }, i * 30); }
@@ -477,7 +472,7 @@ function updateGalleryImage() {
     const galleryImage = document.getElementById('gallery-image');
     if (galleryImage && scannedImages[currentGalleryIndex]) {
         const fileName = scannedImages[currentGalleryIndex];
-        galleryImage.src = `./style/material/${fileName}`;
+        galleryImage.src = `./style/img/${fileName}`;
         attachImageFallback(galleryImage, stripExtension(fileName));
     }
     document.querySelectorAll('.thumbnail').forEach((thumb, idx) => {
