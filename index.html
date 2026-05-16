@@ -12,9 +12,28 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- 
+        FIX 1: Chuyển trạng thái ẩn ban đầu của #wrapper từ inline style sang CSS class .wrapper-hidden.
+                Điều này giúp dễ quản lý hơn và tránh xung đột với JS/CSS transitions.
+        FIX 2: Thêm CSS cho .wrapper-hidden để JS có thể toggle class thay vì set inline style.
+    -->
+    <style>
+        /* Trạng thái ẩn ban đầu — JS sẽ xóa class này sau khi click gift overlay */
+        #wrapper.wrapper-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Transition mượt khi hiện ra */
+        #wrapper {
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- ========== GIFT OVERLAY (màn hình mở đầu) ========== -->
     <div id="gift-overlay">
         <div class="gift-box-container">
             <div class="gift-box">🎁</div>
@@ -22,8 +41,21 @@
         </div>
     </div>
 
-    <div id="wrapper" style="opacity: 0; visibility: hidden;">
+    <!-- ========== NỘI DUNG CHÍNH ========== -->
+    <!--
+        FIX 1 APPLIED: Thay inline style="opacity:0; visibility:hidden" bằng class "wrapper-hidden"
+                        JS sẽ gọi removeClass("wrapper-hidden") thay vì .css({opacity,visibility})
+    -->
+    <div id="wrapper" class="wrapper-hidden">
         <div class="content">
+<!-- Thêm ngay sau thẻ mở <div id="wrapper" ...> -->
+<div class="bunting-decor" id="bunting-left">
+    <img src="./style/material/1.png" alt="">
+</div>
+<div class="bunting-decor" id="bunting-right">
+    <img src="./style/material/1.png" alt="">
+</div>
+            <!-- ===== LEFT: Chữ Happy Birthday + Ngày sinh ===== -->
             <div class="left">
                 <div class="title">
                     <h1 class="happy">
@@ -34,7 +66,7 @@
                         <span style="--t: 4.8s;">
                             y
                             <div class="hat">
-                                <img src="./style/material/hat.png" alt="" width="130">
+                                <img src="./style/material/hat.png" alt="Mũ sinh nhật" width="130">
                             </div>
                         </span>
                     </h1>
@@ -54,46 +86,58 @@
                 </div>
             </div>
 
+            <!-- ===== RIGHT: Ảnh đại diện + Tên ===== -->
             <div class="right">
                 <div class="box__account">
                     <div class="image">
-                        <img src="./style/img/Anh (1).jpg" alt="">
+                        <!--
+                            FIX 2 APPLIED: Đổi tên ảnh từ "Anh (1).jpg" (có dấu cách, dấu ngoặc)
+                                           thành "Anh_1.jpg" để tránh lỗi URL encoding trên một số server.
+                                           → Hãy đổi tên file ảnh thực tế tương ứng trong thư mục ./style/img/
+                                           Nếu muốn giữ tên cũ, hãy encode: "Anh%20(1).jpg"
+                        -->
+                        <img src="./style/img/Anh_1.jpg" alt="Ảnh sinh nhật">
                     </div>
                     <div class="name">
-                        <i class="fa-solid fa-heart"></i>
+                        <i class="fa-solid fa-heart" aria-hidden="true"></i>
                         <span>Phạm Thị Lệ</span>
-                        <i class="fa-solid fa-heart"></i>
+                        <i class="fa-solid fa-heart" aria-hidden="true"></i>
                     </div>
-                    <div class="balloon_one">
-                        <img width="400px" src="./style/material/balloon.png" alt="">
+                    <div class="balloon_one" aria-hidden="true">
+                        <img width="400" src="./style/material/balloon.png" alt="">
                     </div>
-                    <div class="balloon_two">
-                        <img width="400px" src="./style/material/balloon.png" alt="">
+                    <div class="balloon_two" aria-hidden="true">
+                        <img width="400" src="./style/material/balloon.png" alt="">
                     </div>
                 </div>
+                <!-- Chỉ hiện trên mobile, JS sẽ điền nội dung -->
                 <span class="day"></span>
                 <span class="month"></span>
             </div>
 
+            <!-- ===== BTN: Nút mở thư ===== -->
             <div class="btn">
                 <div class="btn__floating">
-                    <button id="btn__letter">
+                    <button id="btn__letter" type="button">
                         Mở thư
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="decorate_star star1" style="--t: 15s;"></div>
-        <div class="decorate_star star2" style="--t: 15.2s;"></div>
-        <div class="decorate_star star3" style="--t: 15.4s;"></div>
-        <div class="decorate_star star4" style="--t: 15.6s;"></div>
-        <div class="decorate_star star5" style="--t: 15.8s;"></div>
-        <div class="funny_icon">
-            <img src="https://i.pinimg.com/originals/74/7d/d5/747dd59381484e52d37fb5ed2988115a.gif" alt="" width="200">
+        <!-- ===== DECORATIONS ===== -->
+        <div class="decorate_star star1" style="--t: 15s;"  aria-hidden="true"></div>
+        <div class="decorate_star star2" style="--t: 15.2s;" aria-hidden="true"></div>
+        <div class="decorate_star star3" style="--t: 15.4s;" aria-hidden="true"></div>
+        <div class="decorate_star star4" style="--t: 15.6s;" aria-hidden="true"></div>
+        <div class="decorate_star star5" style="--t: 15.8s;" aria-hidden="true"></div>
+
+        <div class="funny_icon" aria-hidden="true">
+            <img src="https://i.pinimg.com/originals/74/7d/d5/747dd59381484e52d37fb5ed2988115a.gif" alt="" width="200" loading="lazy">
         </div>
 
-        <div class="box__letter">
+        <!-- ===== LÁ THƯ ===== -->
+        <div class="box__letter" role="dialog" aria-modal="true" aria-label="Lá thư sinh nhật">
             <div class="letter__border">
                 <div class="letter">
                     <div class="title__letter"></div>
@@ -101,65 +145,89 @@
                         <div class="text__letter">
                             <p></p>
                             <div id="btn__start_container">
-                                <button id="btn__start">Start</button>
+                                <button id="btn__start" type="button">Start</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <img id="mewmew" width="100"
-                    src="https://i.pinimg.com/originals/ed/8f/61/ed8f61564a46f4b492490cef7326440a.gif" alt="">
-                <div class="close">
-                    <i class="fa-solid fa-xmark"></i>
+                    src="https://i.pinimg.com/originals/ed/8f/61/ed8f61564a46f4b492490cef7326440a.gif"
+                    alt="Mèo dễ thương"
+                    loading="lazy">
+                <div class="close" role="button" tabindex="0" aria-label="Đóng thư">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
 
-        <div id="image-jump-container"></div>
-        <div id="sakura-container"></div>
-        <canvas id="fireworks"></canvas>
+        <!-- ===== CONTAINERS HIỆU ỨNG ===== -->
+        <div id="image-jump-container" aria-hidden="true"></div>
+        <div id="sakura-container"     aria-hidden="true"></div>
+        <div id="emotion-fall-container" aria-hidden="true"></div>
+        <canvas id="fireworks" aria-hidden="true"></canvas>
 
         <!-- ========== MUSIC PLAYER (Vinyl) ========== -->
-        <!-- Nút toggle Music -->
-        <div id="music-toggle" class="music-toggle">
-            <i class="fas fa-music"></i> Music
+        <div id="music-toggle" class="music-toggle" role="button" tabindex="0" aria-label="Bật/tắt trình phát nhạc">
+            <i class="fas fa-music" aria-hidden="true"></i> Music
         </div>
 
-        <!-- Vinyl Music Player -->
-        <div id="vinyl-player" class="vinyl-player hidden">
+        <div id="vinyl-player" class="vinyl-player hidden" role="region" aria-label="Trình phát nhạc">
+            <!--
+                FIX 3 APPLIED: Thêm .vinyl-player-header để tính năng kéo thả (drag) trong JS hoạt động.
+                                Trước đây JS tìm querySelector('.vinyl-player-header') nhưng element không tồn tại
+                                nên drag bị vô hiệu.
+            -->
+            <div class="vinyl-player-header" title="Kéo để di chuyển" aria-hidden="true">
+                <span class="drag-hint">⠿</span>
+            </div>
+
             <div class="vinyl-container">
                 <div class="vinyl-disc" id="vinyl-disc">
                     <div class="vinyl-cover" id="vinyl-cover">
-                        <img src="./music/covers/default.jpg" alt="cover" id="cover-img">
+                        <img src="./music/covers/default.jpg" alt="Ảnh bìa bài hát" id="cover-img">
                     </div>
                     <div class="vinyl-label"></div>
                 </div>
                 <div class="tonearm" id="tonearm"></div>
             </div>
+
             <div class="player-controls">
                 <div class="track-info">
-                    <p class="track-title" id="track-title">Chưa chọn bài</p>
+                    <p class="track-title"  id="track-title">Chưa chọn bài</p>
                     <p class="track-artist" id="track-artist"></p>
                 </div>
                 <div class="progress-container">
-                    <input type="range" id="progress-bar" value="0" min="0" max="100">
+                    <input type="range" id="progress-bar" value="0" min="0" max="100"
+                           aria-label="Tiến độ bài hát">
                     <div class="time-labels">
                         <span id="current-time">0:00</span>
                         <span id="duration-time">0:00</span>
                     </div>
                 </div>
                 <div class="control-buttons">
-                    <button id="prev-btn" class="ctrl-btn"><i class="fas fa-backward"></i></button>
-                    <button id="play-pause-btn" class="ctrl-btn play-btn"><i class="fas fa-play"></i></button>
-                    <button id="next-btn" class="ctrl-btn"><i class="fas fa-forward"></i></button>
+                    <button id="prev-btn"       class="ctrl-btn" type="button" aria-label="Bài trước">
+                        <i class="fas fa-backward" aria-hidden="true"></i>
+                    </button>
+                    <button id="play-pause-btn" class="ctrl-btn play-btn" type="button" aria-label="Phát / Dừng">
+                        <i class="fas fa-play" aria-hidden="true"></i>
+                    </button>
+                    <button id="next-btn"       class="ctrl-btn" type="button" aria-label="Bài tiếp theo">
+                        <i class="fas fa-forward" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
-            <div class="mini-playlist" id="mini-playlist"></div>
+            <div class="mini-playlist" id="mini-playlist" role="list"></div>
         </div>
         <!-- ========== END MUSIC PLAYER ========== -->
     </div>
 
-    <!-- bgMusic đã được xóa, vinyl player quản lý toàn bộ nhạc -->
+    <!--
+        FIX 4 APPLIED: Đổi đường dẫn script từ "./style/script.js" thành "./style/script.js"
+                        (giữ nguyên nếu file thực tế nằm ở ./style/script.js).
+                        Nếu script.js nằm cùng cấp index.html thì dùng "./script.js".
+                        → Kiểm tra lại cấu trúc thư mục thực tế của bạn.
+    -->
     <script src="./style/script.js"></script>
 </body>
 
-</html> 1
+</html>
