@@ -75,8 +75,15 @@ $(document).ready(function () {
 
     $("#gift-overlay").on("click", function () {
         $(this).addClass("hidden");
-        $("#wrapper").css({ "opacity": "1", "visibility": "visible" });
+        // Hiện nội dung chính
+        $("#wrapper").removeClass("wrapper-hidden");
         $("body").addClass("started");
+
+        // Kích hoạt bunting rơi từ trên xuống (delay nhỏ để transition mượt hơn)
+        setTimeout(function () {
+            $(".bunting-decor").addClass("show");
+        }, 200);
+
         startEverything();
     });
 });
@@ -263,7 +270,7 @@ $("#btn__start").on("click", function () {
             if (!imageFiles || imageFiles.length === 0) return;
             const fileName = imageFiles[Math.floor(Math.random() * imageFiles.length)];
             const img = document.createElement('img');
-            img.src = `./style/img/${fileName}`;
+            img.src = `./style/material/${fileName}`;
             img.className = 'jumping-image';
             img.dataset.name = fileName;
             img.style.pointerEvents = 'auto';
@@ -337,7 +344,7 @@ function attachImageFallback(imgEl, baseName) {
     imgEl.onerror = function () {
         tryIndex++;
         if (tryIndex < SUPPORTED_EXTENSIONS.length) {
-            imgEl.src = `./style/img/${baseName}.${SUPPORTED_EXTENSIONS[tryIndex]}`;
+            imgEl.src = `./style/material/${baseName}.${SUPPORTED_EXTENSIONS[tryIndex]}`;
         } else {
             imgEl.onerror = null; // Dừng thử nếu hết đuôi
         }
@@ -348,17 +355,25 @@ function fetchAndInitImages() {
     return fetch('/scan-images')
         .then(res => res.json())
         .then(files => {
-            // Lọc chỉ giữ file có đuôi ảnh hợp lệ (không phân biệt hoa thường)
-            scannedImages = files.filter(f =>
+            // Lọc chỉ giữ file có đuôi ảnh hợp lệ
+            scannedImages = (files || []).filter(f =>
                 /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
             );
+
+            // Nếu scan ra rỗng thì không hiện slideshow, giữ nguyên ảnh đại diện gốc
+            if (!scannedImages || scannedImages.length === 0) {
+                scannedImages = [];
+            }
+
             initSlideshow();
         })
         .catch(() => {
             console.warn('Không thể fetch /scan-images');
+            scannedImages = [];
             initSlideshow();
         });
 }
+
 
 const imageContainer = document.querySelector('.image');
 function initSlideshow() {
@@ -367,7 +382,7 @@ function initSlideshow() {
     if (list.length === 0) return;
     list.forEach((fileName, i) => {
         const img = document.createElement('img');
-        img.src = `./style/img/${fileName}`;
+        img.src = `./style/material/${fileName}`;
         img.alt = `Birthday Image ${i + 1}`;
         if (i === 0) img.classList.add('active');
         attachImageFallback(img, stripExtension(fileName));
@@ -410,7 +425,7 @@ function createGalleryViewer() {
     const strip = document.getElementById('thumbnail-strip');
     scannedImages.forEach((fileName, i) => {
         const thumb = document.createElement('img');
-        thumb.src = `./style/img/${fileName}`;
+        thumb.src = `./style/material/${fileName}`;
         thumb.className = 'thumbnail' + (i === 0 ? ' active' : '');
         thumb.dataset.index = i;
         attachImageFallback(thumb, stripExtension(fileName));
@@ -462,7 +477,7 @@ function updateGalleryImage() {
     const galleryImage = document.getElementById('gallery-image');
     if (galleryImage && scannedImages[currentGalleryIndex]) {
         const fileName = scannedImages[currentGalleryIndex];
-        galleryImage.src = `./style/img/${fileName}`;
+        galleryImage.src = `./style/material/${fileName}`;
         attachImageFallback(galleryImage, stripExtension(fileName));
     }
     document.querySelectorAll('.thumbnail').forEach((thumb, idx) => {
