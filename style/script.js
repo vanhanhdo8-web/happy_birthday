@@ -533,7 +533,7 @@ window.rainEmotions = rainEmotions;
 
 // ========== VINYL MUSIC PLAYER ==========
 const playlist = [
-    { title: "Nhạc Nền", artist: "", src: "./music/nhac.mp3", cover: "./music/covers/covernen.jpg" },
+    { title: "Nhạc Nền", artist: "", src: "./style/nhac.mp3", cover: "./music/covers/covernen.jpg" },
     { title: "Happy birthday", artist: "Elaina Music", src: "./music/song1.mp3", cover: "./music/covers/cover1.jpg" },
     { title: "Sinh nhật vui", artist: "严浩翔 🐻🌷", src: "./music/song2.mp3", cover: "./music/covers/cover2.jpg" },
     { title: "Happy birthday to you 🌷", artist: "nhạc", src: "./music/song3.mp3", cover: "./music/covers/cover3.jpg" },
