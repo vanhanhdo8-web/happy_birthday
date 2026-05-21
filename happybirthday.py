@@ -91,7 +91,7 @@ def countdown_intro():
         clear_screen()
         print()
         print(f"{C.CYAN}{'─' * 44}{C.RESET}")
-        print(f"{C.WHITE}{'🎂  SINH NHẬT PHẠM THỊ LÊ  🎂':^44}{C.RESET}")
+        print(f"{C.WHITE}{'🎂  SINH NHẬT PHẠM THỊ LỆ  🎂':^44}{C.RESET}")
         print(f"{C.CYAN}{'─' * 44}{C.RESET}")
         print()
         for line in big:
@@ -181,7 +181,7 @@ CAKE_FRAMES = [
         "  <___________________________>  ",
         "   |_________________________|   ",
         "  * . * * . * * . * * . * * . * ",
-    ], " 🎉 HAPPY BIRTHDAY PHẠM THỊ LÊ! 🎉 "),
+    ], " 🎉 HAPPY BIRTHDAY PHẠM THỊ LỆ! 🎉 "),
 ]
 
 def animated_cake():
@@ -217,9 +217,9 @@ def print_banner():
     clear_screen()
     banner = [
         "╔════════════════════════════════════════════╗",
-        "║    🌟  HAPPY BIRTHDAY PHAM THI LE  🌟      ║",
+        "║    🌟  HAPPY BIRTHDAY PHAM THI LE  🌟     ║",
         "║                                            ║",
-        "║       🎂 🎉 🎈 🎁 🎀 🎂 🎉 🎈 🎁 🎀       ║",
+        "║       🎂 🎉 🎈 🎁 🎀 🎂 🎉 🎈 🎁 🎀     ║",
         "╚════════════════════════════════════════════╝",
     ]
     for line in banner:
@@ -236,7 +236,7 @@ def show_letter():
     letter_lines = [
         "╔════════════════════════════════════════════╗",
         "║                                            ║",
-        "║     📨   THƯ CHÚC MỪNG SINH NHẬT   📨      ║",
+        "║     📨   THƯ CHÚC MỪNG SINH NHẬT   📨     ║",
         "║                                            ║",
         "║   Gửi:  Phạm Thị Lê                        ║",
         "║                                            ║",
